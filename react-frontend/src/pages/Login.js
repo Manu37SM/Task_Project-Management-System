@@ -2,40 +2,83 @@ import { useState } from "react";
 import api from "../api";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
- const [email,setEmail]=useState("")
- const [password,setPassword]=useState("")
+  const login = async () => {
+    const res = await api.post("/login", {
+      email,
+      password,
+    });
 
- const login = async () => {
+    localStorage.setItem("token", res.data.token);
+    window.location.href = "/projects";
+  };
 
-   const res = await api.post("/login",{
-     email,
-     password
-   })
+  return (
+    <div style={styles.page}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Welcome Back 👋</h2>
 
-   localStorage.setItem("token",res.data.token);
+        <input
+          style={styles.input}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-   window.location.href="/projects";
- }
+        <input
+          style={styles.input}
+          placeholder="Password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
- return (
-   <div>
-     <h2>Login</h2>
-
-     <input
-      placeholder="email"
-      onChange={e=>setEmail(e.target.value)}
-     />
-
-     <input
-      placeholder="password"
-      type="password"
-      onChange={e=>setPassword(e.target.value)}
-     />
-
-     <button onClick={login}>Login</button>
-   </div>
- )
+        <button style={styles.button} onClick={login}>
+          Login
+        </button>
+      </div>
+    </div>
+  );
 }
 
-export default Login
+const styles = {
+  page: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "#f4f6f8",
+    fontFamily: "Arial",
+  },
+  card: {
+    width: "350px",
+    padding: "30px",
+    borderRadius: "10px",
+    background: "white",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "10px",
+  },
+  input: {
+    padding: "12px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+    fontSize: "14px",
+  },
+  button: {
+    padding: "12px",
+    borderRadius: "6px",
+    border: "none",
+    background: "#4f46e5",
+    color: "white",
+    fontSize: "15px",
+    cursor: "pointer",
+  },
+};
+
+export default Login;
