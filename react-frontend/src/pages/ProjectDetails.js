@@ -2,66 +2,146 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../api";
 
-function ProjectDetails(){
+function ProjectDetails() {
+  const { id } = useParams();
+  const [project, setProject] = useState(null);
 
-const { id } = useParams();
-const [project,setProject] = useState(null);
+  useEffect(() => {
+    api.get("/projects").then((res) => {
+      const foundProject = res.data.find(
+        (p) => p.id === Number(id)
+      );
+      setProject(foundProject);
+    });
+  }, [id]);
 
-useEffect(()=>{
+  if (!project) {
+    return <div style={styles.loading}>Loading project...</div>;
+  }
 
-api.get("/projects").then(res=>{
+  return (
+    <div style={styles.page}>
+      <div style={styles.container}>
+        
+        <div style={styles.header}>
+          <h2 style={styles.title}>{project.name}</h2>
 
-const foundProject = res.data.find(
-(p)=> p.id === Number(id)
-);
+          <Link to={`/create-task/${project.id}`} style={styles.button}>
+            + Create Task
+          </Link>
+        </div>
 
-setProject(foundProject);
+        <h3 style={styles.sectionTitle}>Tasks</h3>
 
-});
+        {project.tasks && project.tasks.length === 0 && (
+          <div style={styles.empty}>No tasks yet</div>
+        )}
 
-},[id]);
+        <div style={styles.taskGrid}>
+          {project.tasks &&
+            project.tasks.map((task) => (
+              <div key={task.id} style={styles.card}>
+                <div style={styles.taskTitle}>{task.title}</div>
 
-if(!project){
-return <div>Loading project...</div>
+                <div style={styles.row}>
+                  <span>Status</span>
+                  <b>{task.status}</b>
+                </div>
+
+                <div style={styles.row}>
+                  <span>Priority</span>
+                  <b>{task.priority}</b>
+                </div>
+
+                <div style={styles.row}>
+                  <span>Due Date</span>
+                  <b>{task.due_date}</b>
+                </div>
+              </div>
+            ))}
+        </div>
+
+      </div>
+    </div>
+  );
 }
 
-return(
+const styles = {
+  page: {
+    background: "#f4f6f8",
+    minHeight: "100vh",
+    padding: "40px 20px",
+    fontFamily: "Arial",
+  },
 
-<div>
+  container: {
+    maxWidth: "900px",
+    margin: "auto",
+  },
 
-<h2>{project.name}</h2>
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "25px",
+  },
 
-<Link to={`/create-task/${project.id}`}>
-Create Task
-</Link>
+  title: {
+    margin: 0,
+  },
 
-<h3>Tasks</h3>
+  button: {
+    textDecoration: "none",
+    background: "#4f46e5",
+    color: "white",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    fontSize: "14px",
+  },
 
-{project.tasks && project.tasks.length === 0 && (
-<div>No tasks yet</div>
-)}
+  sectionTitle: {
+    marginBottom: "10px",
+  },
 
-{project.tasks && project.tasks.map(task => (
+  taskGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+    gap: "15px",
+  },
 
-<div key={task.id} style={{
-border:"1px solid #ccc",
-margin:"10px",
-padding:"10px"
-}}>
+  card: {
+    background: "white",
+    borderRadius: "8px",
+    padding: "15px",
+    boxShadow: "0 5px 15px rgba(0,0,0,0.08)",
+  },
 
-<div><b>Title:</b> {task.title}</div>
-<div><b>Status:</b> {task.status}</div>
-<div><b>Priority:</b> {task.priority}</div>
-<div><b>Due:</b> {task.due_date}</div>
+  taskTitle: {
+    fontWeight: "bold",
+    marginBottom: "10px",
+    fontSize: "16px",
+  },
 
-</div>
+  row: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "6px",
+    fontSize: "14px",
+  },
 
-))}
+  empty: {
+    background: "white",
+    padding: "20px",
+    borderRadius: "8px",
+    textAlign: "center",
+    color: "#777",
+  },
 
-</div>
-
-)
-
-}
+  loading: {
+    textAlign: "center",
+    marginTop: "80px",
+    fontSize: "18px",
+  },
+};
 
 export default ProjectDetails;
