@@ -84,10 +84,9 @@ http://127.0.0.1:8000
 
 Django Service
 
-cd ..
-venv\Scripts\activate
-
 cd django_service
+
+venv\Scripts\activate
 
 python manage.py runserver 8001
 
