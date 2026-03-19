@@ -1,4 +1,4 @@
-FROM php:8.2-cli
+FROM php:8.4-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -20,9 +20,6 @@ COPY . .
 
 # Install dependencies
 RUN composer install
-
-# Generate key
-RUN php artisan key:generate
 
 # Expose port
 EXPOSE 10000
