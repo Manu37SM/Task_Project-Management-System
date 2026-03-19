@@ -46,3 +46,5 @@ typing_extensions==4.15.0
 urllib3==2.5.0
 uvicorn==0.30.6
 Werkzeug==3.1.3
+Django>=4.0
+djangorestframework
