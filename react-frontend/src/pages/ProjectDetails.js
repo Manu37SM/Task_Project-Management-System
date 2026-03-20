@@ -8,7 +8,7 @@ function ProjectDetails() {
 
   useEffect(() => {
     api.get("/projects").then((res) => {
-      const foundProject = res.data.find(
+      const foundProject = res.data.data.find(  // fixed: was res.data.find
         (p) => p.id === Number(id)
       );
       setProject(foundProject);
