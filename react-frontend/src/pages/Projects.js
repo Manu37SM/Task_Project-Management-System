@@ -7,9 +7,9 @@ function Projects() {
 
   useEffect(() => {
     fetch("https://task-project-management-system.onrender.com/api/check-overdue/")
-    .catch(() => {});
+      .catch(() => {});
     api.get("/projects").then((res) => {
-      setProjects(res.data);
+      setProjects(res.data.data);
     });
   }, []);
 
