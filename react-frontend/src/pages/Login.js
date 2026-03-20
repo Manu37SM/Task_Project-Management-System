@@ -12,6 +12,8 @@ function Login() {
     });
 
     localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user_id", res.data.user.id);
+    localStorage.setItem("user_role", res.data.user.role);
     window.location.href = "/projects";
   };
 

@@ -16,7 +16,7 @@ function CreateTask() {
       priority: priority,
       due_date: dueDate,
       project_id: id,
-      assigned_to: 1,
+      assigned_to: localStorage.getItem("user_id"),
     });
 
     alert("Task created");

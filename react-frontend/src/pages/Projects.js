@@ -6,6 +6,8 @@ function Projects() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
+    fetch("https://task-project-management-system.onrender.com/api/check-overdue/")
+    .catch(() => {});
     api.get("/projects").then((res) => {
       setProjects(res.data);
     });
