@@ -1,12 +1,16 @@
 Task & Project Management System
 
-Full Stack Technical Assignment
-
 Tech Stack
 Laravel (Backend API)
 Django (Overdue Task Service)
 React.js (Frontend)
 MySQL
+Docker
+
+Deployment Stack
+Render for backend(laravel(using docker) & django)
+Vercel for frontend
+Railway for MYSQL
 
 Features
 
@@ -125,14 +129,33 @@ Test Credentials
 Admin
 
 admin@test.com
-123456
+admin@123
 
 User
 
 user@test.com
-123456
+user@123
 
 Frontend Live URL
-
-Example
 https://task-project-management-system-lq94.vercel.app/
+
+Only Admin can create Projects and Tasks. Normal users cannot create them, as it has only view access.
+To create a new project please follow below steps:-
+
+Step1:- Login first and get Auth Token using below CURL:-
+curl --location 'https://task-project-management-system-1.onrender.com/api/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@test.com",
+    "password": "admin@123"
+}'
+
+Step2:- Copy the token from login api response and paste it in the Authorization header.
+
+curl --location 'https://task-project-management-system-1.onrender.com/api/projects' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <AUTH_TOKEN>' \
+--data '{
+    "name": "<PROJECT_NAME>",
+    "description" : "<PROJECT_DESCRIPTION>"
+}'
